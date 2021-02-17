@@ -1,3 +1,3 @@
-## 0.0.1
+## 0.0.1 initialize release
 
-* TODO: Describe initial release.
+* initialize release

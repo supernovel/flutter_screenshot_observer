@@ -30,3 +30,5 @@ Dispose resource
 ScreenshotObserver.dispose();
 ```
 
+## TODO
+- [ ] Test IOS device
