@@ -1,9 +1,7 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class ScreenshotObserver {
   static const MethodChannel _channel =
@@ -11,13 +9,6 @@ class ScreenshotObserver {
   static List<VoidCallback> _listeners = [];
 
   static Future<void> initialize() async {
-    if (Platform.isAndroid) {
-      final isGranted = await Permission.storage.isGranted;
-
-      if (!isGranted) {
-        await Permission.storage.request();
-      }
-    }
     _channel.setMethodCallHandler(_handleMethod);
     await _channel.invokeMethod('initialize');
   }
