@@ -1,12 +1,20 @@
 import Flutter
 import UIKit
 
-// refer to https://github.com/flutter-moum/flutter_screenshot_callback
-public class SwiftScreenshotObserverPlugin: NSObject, FlutterPlugin {
+public class SwiftScreenshotCallbackPlugin: NSObject, FlutterPlugin {
+  static var channel: FlutterMethodChannel?
+    
+  static var observer: NSObjectProtocol?;
+    
+
   public static func register(with registrar: FlutterPluginRegistrar) {
-    let channel = FlutterMethodChannel(name: "screenshot_observer", binaryMessenger: registrar.messenger())
-    let instance = SwiftScreenshotObserverPlugin()
-    registrar.addMethodCallDelegate(instance, channel: channel)
+    channel  = FlutterMethodChannel(name: "flutter.moum/screenshot_callback", binaryMessenger: registrar.messenger())
+    observer = nil;
+    let instance = SwiftScreenshotCallbackPlugin()
+    if let channel = channel {
+      registrar.addMethodCallDelegate(instance, channel: channel)
+    }
+    
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
@@ -20,10 +28,10 @@ public class SwiftScreenshotObserverPlugin: NSObject, FlutterPlugin {
           object: nil,
           queue: .main) { notification in
           if let channel = SwiftScreenshotCallbackPlugin.channel {
-            channel.invokeMethod("onScreenshot", arguments: nil)
+            channel.invokeMethod("onCallback", arguments: nil)
           }
 
-          result("screenshot called")
+          result("screen shot called")
       }
       result("initialize")
     }else if(call.method == "dispose"){
@@ -44,3 +52,4 @@ public class SwiftScreenshotObserverPlugin: NSObject, FlutterPlugin {
       }
   }
 }
+
