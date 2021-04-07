@@ -14,7 +14,6 @@ class ScreenshotObserver {
   }
 
   static void addListener(VoidCallback listener) {
-    assert(listener != null, 'A non-null listener must be provided.');
     _listeners.add(listener);
   }
 
