@@ -16,13 +16,13 @@ class ScreenshotObserver(private val contentResolver: ContentResolver, private v
 
     fun observe() {
         if (contentObserver == null) {
-            contentObserver = object : ContentObserver(Handler(Looper.getMainLooper())) {
-                override fun onChange(selfChange: Boolean, uri: Uri) {
+
+            val contentObserver = object : ContentObserver(Handler(Looper.getMainLooper())) {
+                override fun onChange(selfChange: Boolean, uri: Uri?) {
                     super.onChange(selfChange, uri)
                     uri?.let { queryScreenshots(it) }
                 }
             }
-
             contentResolver.registerContentObserver(
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                     true,
@@ -32,10 +32,7 @@ class ScreenshotObserver(private val contentResolver: ContentResolver, private v
     }
 
     fun unobserve() {
-        if (contentObserver != null) {
-            contentResolver.unregisterContentObserver(contentObserver!!)
-        }
-
+        contentObserver?.let { contentResolver.unregisterContentObserver(it) }
         contentObserver = null
     }
 
@@ -63,7 +60,7 @@ class ScreenshotObserver(private val contentResolver: ContentResolver, private v
 
             while (cursor.moveToNext()) {
                 val path = cursor.getString(dataColumn)
-                if (path.contains("screenshots", true)) {
+                if (path.contains("screenshot", true)) {
                     listener.onScreenshot(path)
                 }
             }
