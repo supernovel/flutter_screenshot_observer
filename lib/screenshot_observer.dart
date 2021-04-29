@@ -12,7 +12,7 @@ class ScreenshotObserver {
   static bool _initialized = false;
   static Future<void> initialize() async {
     if (!_initialized) {
-      await requestPermission();
+      // await requestPermission();
       _channel.setMethodCallHandler(_handleMethod);
       await _channel.invokeMethod('initialize');
       _initialized = true;
