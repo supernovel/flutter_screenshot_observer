@@ -45,26 +45,32 @@ class ScreenshotObserver(private val contentResolver: ContentResolver, private v
     }
 
     private fun queryDataColumn(uri: Uri) {
-        val projection = arrayOf(
-                MediaStore.Images.Media.DATA
-        )
-        
-        contentResolver.query(
-                uri,
-                projection,
-                null,
-                null,
-                null
-        )?.use { cursor ->
-            val dataColumn = cursor.getColumnIndex(MediaStore.Images.Media.DATA)
+    try {
+            val projection = arrayOf(
+                    MediaStore.Images.Media.DATA
+            )
+            
+            contentResolver.query(
+                    uri,
+                    projection,
+                    null,
+                    null,
+                    null
+            )?.use { cursor ->
+                val dataColumn = cursor.getColumnIndex(MediaStore.Images.Media.DATA)
 
-            while (cursor.moveToNext()) {
-                val path = cursor.getString(dataColumn)
-                if (path.contains("screenshot", true)) {
-                    listener.onScreenshot(path)
+                while (cursor.moveToNext()) {
+                    val path = cursor.getString(dataColumn)
+                    if (path.contains("screenshot", true)) {
+                        listener.onScreenshot(path)
+                    }
                 }
             }
-        }
+    }
+    catch (e: Exception) {
+        
+    }
+
     }
 
     private fun queryRelativeDataColumn(uri: Uri) {
