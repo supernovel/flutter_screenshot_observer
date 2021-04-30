@@ -45,11 +45,11 @@ class ScreenshotObserver(private val contentResolver: ContentResolver, private v
     }
 
     private fun queryDataColumn(uri: Uri) {
-    try {
+        try {
             val projection = arrayOf(
                     MediaStore.Images.Media.DATA
             )
-            
+
             contentResolver.query(
                     uri,
                     projection,
@@ -66,36 +66,39 @@ class ScreenshotObserver(private val contentResolver: ContentResolver, private v
                     }
                 }
             }
-    }
-    catch (e: Exception) {
-        
-    }
+        } catch (e: Exception) {
+
+        }
 
     }
 
     private fun queryRelativeDataColumn(uri: Uri) {
-        val projection = arrayOf(
-                MediaStore.Images.Media.DISPLAY_NAME,
-                MediaStore.Images.Media.RELATIVE_PATH
-        )
+        try {
+            val projection = arrayOf(
+                    MediaStore.Images.Media.DISPLAY_NAME,
+                    MediaStore.Images.Media.RELATIVE_PATH
+            )
 
-        contentResolver.query(
-                uri,
-                projection,
-                null,
-                null,
-                null
-        )?.use { cursor ->
-            val relativePathColumn = cursor.getColumnIndex(MediaStore.Images.Media.RELATIVE_PATH)
-            val displayNameColumn = cursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME)
-            
-            while (cursor.moveToNext()) {
-                val name = cursor.getString(displayNameColumn)
-                val relativePath = cursor.getString(relativePathColumn)
-                if (name.contains("screenshots", true) || relativePath.contains("screenshot", true)) {
-                    listener.onScreenshot(File(relativePath, name).path)
+            contentResolver.query(
+                    uri,
+                    projection,
+                    null,
+                    null,
+                    null
+            )?.use { cursor ->
+                val relativePathColumn = cursor.getColumnIndex(MediaStore.Images.Media.RELATIVE_PATH)
+                val displayNameColumn = cursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME)
+
+                while (cursor.moveToNext()) {
+                    val name = cursor.getString(displayNameColumn)
+                    val relativePath = cursor.getString(relativePathColumn)
+                    if (name.contains("screenshots", true) || relativePath.contains("screenshot", true)) {
+                        listener.onScreenshot(File(relativePath, name).path)
+                    }
                 }
             }
+        } catch (e: Exception) {
+
         }
     }
 
