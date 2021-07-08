@@ -1,5 +1,7 @@
 # screenshot_observer
 
+## keep permision_handler in 6.1.3
+
 Handle screenshot event.
 
 Refer to
