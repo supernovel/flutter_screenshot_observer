@@ -1,6 +1,6 @@
-# screenshot_observer_example
+# example
 
-Demonstrates how to use the screenshot_observer plugin.
+A new Flutter project.
 
 ## Getting Started
 

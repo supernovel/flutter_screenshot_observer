@@ -26,23 +26,27 @@ class ScreenshotObserverPlugin : FlutterPlugin, MethodCallHandler, ActivityAware
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
     //Log.d(TAG, "onMethodCall: ");
-    if (call.method.equals("initialize")) {
-      handler = Handler(Looper.getMainLooper())
-      screenshotObserver = context?.contentResolver?.let {
-        ScreenshotObserver(it, object : ScreenshotObserver.Listener {
-          override fun onScreenshot(path: String?) {
-            channel?.invokeMethod("onScreenshot", null)
+    when {
+        call.method.equals("initialize") -> {
+          handler = Handler(Looper.getMainLooper())
+          screenshotObserver = context?.contentResolver?.let {
+            ScreenshotObserver(it, object : ScreenshotObserver.Listener {
+              override fun onScreenshot(path: String?) {
+                channel?.invokeMethod("onScreenshot", null)
+              }
+            })
           }
-        })
-      }
-      screenshotObserver?.observe()
-      result.success("initialize")
-    } else if (call.method.equals("dispose")) {
-      screenshotObserver?.unobserve()
-      screenshotObserver = null
-      result.success("dispose")
-    } else {
-      result.notImplemented()
+          screenshotObserver?.observe()
+          result.success("initialize")
+        }
+        call.method.equals("dispose") -> {
+          screenshotObserver?.unobserve()
+          screenshotObserver = null
+          result.success("dispose")
+        }
+        else -> {
+          result.notImplemented()
+        }
     }
   }
 

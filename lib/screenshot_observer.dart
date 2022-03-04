@@ -10,11 +10,12 @@ class ScreenshotObserver {
       const MethodChannel('screenshot_observer');
   static VoidCallback? _listener;
   static bool _initialized = false;
+
   static Future<void> initialize() async {
     if (!_initialized) {
-      // await requestPermission();
-      _channel.setMethodCallHandler(_handleMethod);
+      await requestPermission();
       await _channel.invokeMethod('initialize');
+      _channel.setMethodCallHandler(_handleMethod);
       _initialized = true;
     }
   }

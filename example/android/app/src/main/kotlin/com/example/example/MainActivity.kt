@@ -1,4 +1,4 @@
-package com.supernovel.screenshot_observer_example
+package com.example.example
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
 import java.io.File
+import kotlin.math.log
 
 
 // refer to https://github.com/nikit19/ScreenshotDetector
@@ -98,7 +99,6 @@ class ScreenshotObserver(private val contentResolver: ContentResolver, private v
                 }
             }
         } catch (e: Exception) {
-
         }
     }
 
