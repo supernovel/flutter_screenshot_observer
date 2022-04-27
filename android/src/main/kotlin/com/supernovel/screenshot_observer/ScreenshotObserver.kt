@@ -17,7 +17,7 @@ class ScreenshotObserver(private val contentResolver: ContentResolver, private v
     fun observe() {
         if (contentObserver == null) {
             contentObserver = object : ContentObserver(Handler(Looper.getMainLooper())) {
-                override fun onChange(selfChange: Boolean, uri: Uri) {
+                override fun onChange(selfChange: Boolean, uri: Uri?) {
                     super.onChange(selfChange, uri)
                     uri?.let { queryScreenshots(it) }
                 }
